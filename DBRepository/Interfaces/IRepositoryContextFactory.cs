@@ -6,6 +6,7 @@ namespace DBRepository.Interfaces
 {
     public interface IRepositoryContextFactory
     {
-        RepositoryContext CreateDBContext(string connectionString);
+          RepositoryContext CreateDbContext(string connectionString);
+      //  IDisposable CreateDbContext(string connectionString);
     }
 }

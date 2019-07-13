@@ -16,5 +16,7 @@ namespace DBRepository
 
             return new RepositoryContext(optionsBuilder.Options);
         }
+
+        
     }
 }

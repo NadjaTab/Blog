@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using DBRepository.Interfaces;
 using DBRepository.Repositories;
-using DBRepository.Factories;
+using DBRepository;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogRR
 {
@@ -24,8 +26,9 @@ namespace BlogRR
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddScoped<IRepositoryContextFactory, RepositoryContextFactory>(); //1
-            services.AddScoped<IBlogRepository>(provider => new BlogRepository(Configuration.GetConnectionString("DefaultConnection"), provider.GetService<IRepositoryContextFactory>())); // 2
+            services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+             services.AddScoped<IRepositoryContextFactory, RepositoryContextFactory>(); //1
+           // services.AddScoped<IBlogRepository>(provider => new BlogRepository(Configuration.GetConnectionString("DefaultConnection"), provider.GetService<IRepositoryContextFactory>())); // 2
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,8 +40,13 @@ namespace BlogRR
             }
 
             app.UseStaticFiles();
-            app.UseMvc();
-            
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "DefaultApi",
+                    template: "api/{controller}/{action}");
+            });
+
         }
     }
 }

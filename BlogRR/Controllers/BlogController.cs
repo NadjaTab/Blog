@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 //using PersonalPortal.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DBRepository.Interfaces;
 
-namespace PersonalPortal.Controllers
+namespace BlogRR.Controllers
 {
     [Route("api/[controller]")]
     public class BlogController : Controller
@@ -25,3 +26,4 @@ namespace PersonalPortal.Controllers
             return await _blogRepository.GetPosts(pageIndex, 10, tag);
         }
     }
+}
